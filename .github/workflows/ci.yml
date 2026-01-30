@@ -22,8 +22,8 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: uv pip install -e ".[dev]" --system
+      - name: Create venv and install dependencies
+        run: uv venv --python ${{ matrix.python-version }} && uv pip install -e ".[dev]"
 
       - name: Lint (ruff check)
         run: uv run ruff check kst_core/ tests/
