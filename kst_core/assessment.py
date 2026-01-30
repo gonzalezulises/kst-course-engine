@@ -345,4 +345,3 @@ def simulate_responses(
         p = params.p_correct(item_id, true_state)
         responses[item_id] = bool(rng.random() < p)
     return responses
-

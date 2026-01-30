@@ -43,9 +43,7 @@ class ResponseData(BaseModel, frozen=True):
 
     @field_validator("patterns")
     @classmethod
-    def at_least_one_pattern(
-        cls, v: tuple[dict[str, bool], ...]
-    ) -> tuple[dict[str, bool], ...]:
+    def at_least_one_pattern(cls, v: tuple[dict[str, bool], ...]) -> tuple[dict[str, bool], ...]:
         if len(v) == 0:
             msg = "Must have at least one response pattern"
             raise ValueError(msg)
@@ -283,9 +281,7 @@ def _compute_log_likelihoods(
 def _logsumexp(x: np.ndarray, axis: int) -> np.ndarray:
     """Numerically stable log-sum-exp along an axis."""
     x_max = np.max(x, axis=axis, keepdims=True)
-    result: np.ndarray = np.squeeze(x_max, axis=axis) + np.log(
-        np.sum(np.exp(x - x_max), axis=axis)
-    )
+    result: np.ndarray = np.squeeze(x_max, axis=axis) + np.log(np.sum(np.exp(x - x_max), axis=axis))
     return result
 
 
@@ -340,12 +336,8 @@ def _pattern_probability(
         log_p = 0.0
         for item_id, correct in pattern.items():
             if correct:
-                log_p += math.log(
-                    max(estimate.params.p_correct(item_id, state), _EPS)
-                )
+                log_p += math.log(max(estimate.params.p_correct(item_id, state), _EPS))
             else:
-                log_p += math.log(
-                    max(estimate.params.p_incorrect(item_id, state), _EPS)
-                )
+                log_p += math.log(max(estimate.params.p_incorrect(item_id, state), _EPS))
         total += pi_k * math.exp(log_p)
     return total

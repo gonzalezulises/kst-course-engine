@@ -94,9 +94,7 @@ class TestEMFit:
         """EM should approximately recover known uniform parameters."""
         true_beta, true_eta = 0.15, 0.10
         true_params = BLIMParameters.uniform(abc_domain, beta=true_beta, eta=true_eta)
-        data = _generate_data(
-            abc_domain, linear_states, true_params, n_per_state=200, seed=123
-        )
+        data = _generate_data(abc_domain, linear_states, true_params, n_per_state=200, seed=123)
 
         estimate = em_fit(abc_domain, linear_states, data)
 
@@ -230,9 +228,7 @@ class TestGoodnessOfFit:
     ) -> None:
         """Data generated from model should yield reasonable G²."""
         true_params = BLIMParameters.uniform(abc_domain, beta=0.1, eta=0.1)
-        data = _generate_data(
-            abc_domain, linear_states, true_params, n_per_state=200
-        )
+        data = _generate_data(abc_domain, linear_states, true_params, n_per_state=200)
 
         estimate = em_fit(abc_domain, linear_states, data)
         gof = goodness_of_fit(data, estimate, linear_states)
@@ -284,15 +280,11 @@ class TestEndToEnd:
         rng = np.random.default_rng(42)
 
         # Simulate responses from multiple learners in different states
-        state_list = sorted(
-            course.states, key=lambda s: (len(s), sorted(s.item_ids))
-        )
+        state_list = sorted(course.states, key=lambda s: (len(s), sorted(s.item_ids)))
         patterns: list[dict[str, bool]] = []
         for state in state_list[:5]:  # Use first 5 states for speed
             for _ in range(30):
-                patterns.append(
-                    simulate_responses(state, true_params, rng=rng)
-                )
+                patterns.append(simulate_responses(state, true_params, rng=rng))
 
         data = ResponseData(domain=course.domain, patterns=tuple(patterns))
         estimate = em_fit(course.domain, course.states, data)

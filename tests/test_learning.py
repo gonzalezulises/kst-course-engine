@@ -28,12 +28,14 @@ def linear_space(abc_domain: Domain) -> LearningSpace:
     """Linear learning space: {} -> {a} -> {a,b} -> {a,b,c}."""
     return LearningSpace(
         domain=abc_domain,
-        states=frozenset({
-            _state(),
-            _state("a"),
-            _state("a", "b"),
-            _state("a", "b", "c"),
-        }),
+        states=frozenset(
+            {
+                _state(),
+                _state("a"),
+                _state("a", "b"),
+                _state("a", "b", "c"),
+            }
+        ),
     )
 
 
@@ -42,13 +44,15 @@ def branching_space(abc_domain: Domain) -> LearningSpace:
     """Branching space: {} -> {a} -> {a,b} or {a,c} -> {a,b,c}."""
     return LearningSpace(
         domain=abc_domain,
-        states=frozenset({
-            _state(),
-            _state("a"),
-            _state("a", "b"),
-            _state("a", "c"),
-            _state("a", "b", "c"),
-        }),
+        states=frozenset(
+            {
+                _state(),
+                _state("a"),
+                _state("a", "b"),
+                _state("a", "c"),
+                _state("a", "b", "c"),
+            }
+        ),
     )
 
 
@@ -208,10 +212,7 @@ class TestTransitionMatrix:
         """The full state row should be [0, ..., 0, 1]."""
         model = LearningModel(space=linear_space, rates=uniform_rates)
         states, matrix = model.transition_matrix()
-        full_idx = next(
-            i for i, s in enumerate(states)
-            if s == _state("a", "b", "c")
-        )
+        full_idx = next(i for i, s in enumerate(states) if s == _state("a", "b", "c"))
         assert matrix[full_idx, full_idx] == pytest.approx(1.0)
         assert sum(matrix[full_idx]) == pytest.approx(1.0)
 
@@ -337,9 +338,7 @@ class TestSimulateTrajectory:
         uniform_rates: LearningRate,
     ) -> None:
         model = LearningModel(space=linear_space, rates=uniform_rates)
-        traj = model.simulate_trajectory(
-            start=_state("a"), rng=np.random.default_rng(0)
-        )
+        traj = model.simulate_trajectory(start=_state("a"), rng=np.random.default_rng(0))
         assert traj[0] == _state("a")
         assert traj[-1] == _state("a", "b", "c")
 
@@ -349,9 +348,7 @@ class TestSimulateTrajectory:
         uniform_rates: LearningRate,
     ) -> None:
         model = LearningModel(space=linear_space, rates=uniform_rates)
-        traj = model.simulate_trajectory(
-            rng=np.random.default_rng(0), max_steps=1
-        )
+        traj = model.simulate_trajectory(rng=np.random.default_rng(0), max_steps=1)
         assert len(traj) <= 2  # start + at most 1 step
 
     def test_default_rng(

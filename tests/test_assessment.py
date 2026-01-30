@@ -176,9 +176,7 @@ class TestBeliefState:
         s1 = _state("a")
         domain = Domain(items=frozenset({Item(id="a")}))
         # Extreme params: beta=0, eta=0
-        params = BLIMParameters(
-            domain=domain, beta={"a": 0.0}, eta={"a": 0.0}
-        )
+        params = BLIMParameters(domain=domain, beta={"a": 0.0}, eta={"a": 0.0})
         belief = BeliefState(states=(s0, s1), probabilities=(1.0, 0.0))
         # s0 has p(correct|a not in s0)=eta=0, p(incorrect|a not in s0)=1
         # s1 has prob=0, so contribution=0

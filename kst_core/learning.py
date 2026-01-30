@@ -77,9 +77,7 @@ class LearningModel(BaseModel, frozen=True):
             raise ValueError(msg)
         return self
 
-    def transition_probs(
-        self, state: KnowledgeState
-    ) -> dict[KnowledgeState, float]:
+    def transition_probs(self, state: KnowledgeState) -> dict[KnowledgeState, float]:
         """Transition probabilities from state K.
 
         P(K → K ∪ {q}) = λ_q / Σ_{q' ∈ OF(K)} λ_{q'}
@@ -141,9 +139,7 @@ class LearningModel(BaseModel, frozen=True):
 
         # Identify transient states (everything except Q)
         transient = [s for s in state_list if s != full]
-        transient_idx = [
-            i for i, s in enumerate(state_list) if s != full
-        ]
+        transient_idx = [i for i, s in enumerate(state_list) if s != full]
         n_transient = len(transient)
 
         # Extract transient-to-transient sub-matrix T
@@ -197,9 +193,7 @@ class LearningModel(BaseModel, frozen=True):
 
         return tuple(trajectory)
 
-    def optimal_teaching_item(
-        self, state: KnowledgeState
-    ) -> str:
+    def optimal_teaching_item(self, state: KnowledgeState) -> str:
         """Select the item that minimizes expected steps to mastery.
 
         For each q in the outer fringe of K, compute the expected
