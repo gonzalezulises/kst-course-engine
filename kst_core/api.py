@@ -16,6 +16,7 @@ from pydantic import BaseModel
 
 try:
     from fastapi import FastAPI, HTTPException
+    from fastapi.middleware.cors import CORSMiddleware
 except ImportError as _exc:  # pragma: no cover
     msg = "FastAPI is required for the REST API. Install with: pip install kst-course-engine[api]"
     raise ImportError(msg) from _exc
@@ -227,6 +228,13 @@ def create_app() -> FastAPI:
         title="KST Course Engine API",
         description="Knowledge Space Theory — REST API for course analysis",
         version="0.1.0",
+    )
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:5173"],
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     @application.post("/info", response_model=InfoResponse)

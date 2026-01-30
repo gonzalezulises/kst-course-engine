@@ -45,3 +45,7 @@ docs/.docusaurus/
 .env
 .env.local
 .hypothesis/
+
+# Web UI
+ui/node_modules/
+ui/dist/

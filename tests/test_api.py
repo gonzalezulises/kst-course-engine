@@ -487,3 +487,35 @@ class TestCreateApp:
         application = create_app()
         assert application.title == "KST Course Engine API"
         assert application.version == "0.1.0"
+
+
+class TestCORS:
+    def test_cors_preflight(self, client: TestClient) -> None:
+        resp = client.options(
+            "/info",
+            headers={
+                "Origin": "http://localhost:5173",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "Content-Type",
+            },
+        )
+        assert resp.status_code == 200
+        assert resp.headers["access-control-allow-origin"] == "http://localhost:5173"
+
+    def test_cors_actual_request(self, client: TestClient) -> None:
+        resp = client.post(
+            "/info",
+            json=_minimal_input(),
+            headers={"Origin": "http://localhost:5173"},
+        )
+        assert resp.status_code == 200
+        assert resp.headers["access-control-allow-origin"] == "http://localhost:5173"
+
+    def test_cors_disallowed_origin(self, client: TestClient) -> None:
+        resp = client.post(
+            "/info",
+            json=_minimal_input(),
+            headers={"Origin": "http://evil.com"},
+        )
+        assert resp.status_code == 200
+        assert "access-control-allow-origin" not in resp.headers
