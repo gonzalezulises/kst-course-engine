@@ -87,7 +87,8 @@ kst_core/
 ├── space.py           # KnowledgeSpace, LearningSpace
 ├── prerequisites.py   # SurmiseRelation, PrerequisiteGraph
 ├── validation.py      # ValidationResult, ValidationReport
-└── parser.py          # YAML parser (.kst.yaml → KST structures)
+├── parser.py          # YAML parser (.kst.yaml → KST structures)
+└── assessment.py      # BLIM adaptive assessment engine
 ```
 
 **Data flow:**
@@ -118,6 +119,7 @@ kst_core/
 | `prerequisites` | `SurmiseRelation`, `PrerequisiteGraph` | Quasi-orders, DAGs, Birkhoff theorem |
 | `validation` | `ValidationResult`, `ValidationReport` | Formal validators with bibliographic refs |
 | `parser` | `CourseDefinition`, `parse_yaml`, `parse_file` | Declarative YAML course definitions |
+| `assessment` | `BLIMParameters`, `BeliefState`, `AdaptiveAssessment` | BLIM adaptive assessment with Bayesian updating |
 
 ## Development
 

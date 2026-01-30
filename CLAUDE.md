@@ -31,6 +31,7 @@ kst_core/
 ├── prerequisites.py   # SurmiseRelation, PrerequisiteGraph (DAG/quasi-order)
 ├── validation.py      # ValidationResult, ValidationReport, validators
 ├── parser.py          # YAML parser (.kst.yaml → CourseDefinition)
+├── assessment.py      # BLIM adaptive assessment (Bayesian state estimation)
 └── __init__.py        # Public API exports
 ```
 
@@ -51,6 +52,16 @@ kst_core/
              LearningSpace
               ╱          ╲
      learning_paths    fringes
+
+KnowledgeSpace + BLIMParameters
+              │
+              ▼
+     AdaptiveAssessment
+       ╱        ╲
+  BeliefState   select_item (entropy)
+       │
+       ▼
+  MAP estimate K̂
 ```
 
 ## Conventions
