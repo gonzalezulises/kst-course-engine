@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         'development/getting-started',
         'development/testing-strategy',
         'development/contributing',
+        'development/cli',
       ],
     },
   ],

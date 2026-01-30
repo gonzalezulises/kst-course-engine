@@ -90,7 +90,8 @@ kst_core/
 ├── parser.py          # YAML parser (.kst.yaml → KST structures)
 ├── assessment.py      # BLIM adaptive assessment engine
 ├── estimation.py      # EM parameter estimation for BLIM
-└── learning.py        # Markov learning model on learning spaces
+├── learning.py        # Markov learning model on learning spaces
+└── cli.py             # Command-line interface
 ```
 
 **Data flow:**
@@ -124,6 +125,16 @@ kst_core/
 | `assessment` | `BLIMParameters`, `BeliefState`, `AdaptiveAssessment` | BLIM adaptive assessment with Bayesian updating |
 | `estimation` | `ResponseData`, `BLIMEstimate`, `em_fit`, `goodness_of_fit` | EM parameter estimation and model fit |
 | `learning` | `LearningRate`, `LearningModel` | Markov chain learning model with optimal teaching |
+| `cli` | `kst` command | CLI: info, validate, paths, simulate |
+
+## CLI
+
+```bash
+kst info examples/intro-pandas.kst.yaml       # Course overview
+kst validate examples/intro-pandas.kst.yaml   # Formal validation
+kst paths examples/intro-pandas.kst.yaml      # Learning paths
+kst simulate examples/intro-pandas.kst.yaml --learners 100 --seed 42
+```
 
 ## Development
 

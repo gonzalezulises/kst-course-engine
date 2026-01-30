@@ -20,6 +20,12 @@ uv run ruff check kst_core/ tests/     # Lint check
 uv run ruff format kst_core/ tests/    # Auto-format
 uv run mypy kst_core/                  # Type check (strict)
 cd docs && npm run build               # Build documentation
+
+# CLI
+kst info examples/intro-pandas.kst.yaml       # Course overview
+kst validate examples/intro-pandas.kst.yaml   # Formal validation
+kst paths examples/intro-pandas.kst.yaml      # Learning paths
+kst simulate examples/intro-pandas.kst.yaml   # Simulate learners
 ```
 
 ## Architecture
@@ -34,6 +40,7 @@ kst_core/
 ├── assessment.py      # BLIM adaptive assessment (Bayesian state estimation)
 ├── estimation.py      # EM parameter estimation for BLIM (MLE)
 ├── learning.py        # Markov learning model (trajectory simulation)
+├── cli.py             # Command-line interface (kst info/validate/paths/simulate)
 └── __init__.py        # Public API exports
 ```
 
