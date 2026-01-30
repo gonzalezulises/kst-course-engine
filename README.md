@@ -91,6 +91,7 @@ kst_core/
 ├── assessment.py      # BLIM adaptive assessment engine
 ├── estimation.py      # EM parameter estimation for BLIM
 ├── learning.py        # Markov learning model on learning spaces
+├── viz.py             # Visualization: DOT, Mermaid, JSON export
 └── cli.py             # Command-line interface
 ```
 
@@ -125,7 +126,8 @@ kst_core/
 | `assessment` | `BLIMParameters`, `BeliefState`, `AdaptiveAssessment` | BLIM adaptive assessment with Bayesian updating |
 | `estimation` | `ResponseData`, `BLIMEstimate`, `em_fit`, `goodness_of_fit` | EM parameter estimation and model fit |
 | `learning` | `LearningRate`, `LearningModel` | Markov chain learning model with optimal teaching |
-| `cli` | `kst` command | CLI: info, validate, paths, simulate |
+| `viz` | `hasse_dot`, `hasse_mermaid`, `course_json` | DOT, Mermaid, and JSON export |
+| `cli` | `kst` command | CLI: info, validate, paths, simulate, export |
 
 ## CLI
 
@@ -134,6 +136,10 @@ kst info examples/intro-pandas.kst.yaml       # Course overview
 kst validate examples/intro-pandas.kst.yaml   # Formal validation
 kst paths examples/intro-pandas.kst.yaml      # Learning paths
 kst simulate examples/intro-pandas.kst.yaml --learners 100 --seed 42
+kst export examples/intro-pandas.kst.yaml --format dot     # Hasse DOT
+kst export examples/intro-pandas.kst.yaml --format mermaid  # Hasse Mermaid
+kst export examples/intro-pandas.kst.yaml --format json     # JSON export
+kst export examples/intro-pandas.kst.yaml --type prerequisites  # Prereq DOT
 ```
 
 ## Development

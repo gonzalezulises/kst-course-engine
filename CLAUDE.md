@@ -26,6 +26,7 @@ kst info examples/intro-pandas.kst.yaml       # Course overview
 kst validate examples/intro-pandas.kst.yaml   # Formal validation
 kst paths examples/intro-pandas.kst.yaml      # Learning paths
 kst simulate examples/intro-pandas.kst.yaml   # Simulate learners
+kst export examples/intro-pandas.kst.yaml     # Export as DOT/JSON/Mermaid
 ```
 
 ## Architecture
@@ -40,7 +41,8 @@ kst_core/
 ├── assessment.py      # BLIM adaptive assessment (Bayesian state estimation)
 ├── estimation.py      # EM parameter estimation for BLIM (MLE)
 ├── learning.py        # Markov learning model (trajectory simulation)
-├── cli.py             # Command-line interface (kst info/validate/paths/simulate)
+├── viz.py             # Visualization: DOT, Mermaid, JSON export (Hasse diagrams)
+├── cli.py             # Command-line interface (kst info/validate/paths/simulate/export)
 └── __init__.py        # Public API exports
 ```
 

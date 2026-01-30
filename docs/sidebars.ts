@@ -38,6 +38,7 @@ const sidebars: SidebarsConfig = {
         'api/assessment',
         'api/estimation',
         'api/learning',
+        'api/viz',
       ],
     },
   ],
