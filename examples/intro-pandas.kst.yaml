@@ -1,0 +1,44 @@
+# KST Course Definition: Introduction to Pandas
+# This YAML file defines a knowledge space for a Pandas introductory course.
+
+domain:
+  name: "Introduction to Pandas"
+  description: "Foundational skills for data manipulation with pandas"
+  items:
+    - id: "import"
+      label: "Importing pandas and reading data"
+    - id: "series"
+      label: "Understanding pandas Series"
+    - id: "dataframe"
+      label: "Understanding DataFrames"
+    - id: "indexing"
+      label: "Indexing and selecting data"
+    - id: "filtering"
+      label: "Boolean indexing and filtering"
+    - id: "groupby"
+      label: "GroupBy operations"
+    - id: "merge"
+      label: "Merging and joining DataFrames"
+    - id: "pivot"
+      label: "Pivot tables and reshaping"
+
+prerequisites:
+  # DAG edges: prerequisite -> dependent
+  edges:
+    - ["import", "series"]
+    - ["import", "dataframe"]
+    - ["series", "indexing"]
+    - ["dataframe", "indexing"]
+    - ["indexing", "filtering"]
+    - ["indexing", "groupby"]
+    - ["dataframe", "merge"]
+    - ["indexing", "merge"]
+    - ["groupby", "pivot"]
+    - ["filtering", "pivot"]
+
+# The knowledge space is generated from the prerequisite DAG
+# via Birkhoff's theorem (downsets of the transitive closure).
+#
+# Example learning paths:
+#   import → series → dataframe → indexing → filtering → groupby → merge → pivot
+#   import → dataframe → series → indexing → merge → filtering → groupby → pivot
