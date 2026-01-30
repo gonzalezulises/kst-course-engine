@@ -113,6 +113,50 @@ class TestSimulate:
         assert rc == 1
 
 
+class TestExport:
+    def test_export_dot_hasse(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["export", EXAMPLE_FILE])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "digraph Hasse" in out
+
+    def test_export_dot_prerequisites(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["export", EXAMPLE_FILE, "--type", "prerequisites"])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "digraph Prerequisites" in out
+
+    def test_export_mermaid_hasse(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["export", EXAMPLE_FILE, "--format", "mermaid"])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "graph BT" in out
+
+    def test_export_mermaid_prerequisites_unsupported(
+        self, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rc = main(["export", EXAMPLE_FILE, "--format", "mermaid", "--type", "prerequisites"])
+        assert rc == 1
+        err = capsys.readouterr().err
+        assert "not supported" in err
+
+    def test_export_json(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["export", EXAMPLE_FILE, "--format", "json"])
+        assert rc == 0
+        import json
+
+        out = capsys.readouterr().out
+        data = json.loads(out)
+        assert "name" in data
+        assert "domain" in data
+
+    def test_export_file_not_found(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["export", "nonexistent.kst.yaml"])
+        assert rc == 1
+        err = capsys.readouterr().err
+        assert "Error" in err
+
+
 class TestNoCommand:
     def test_no_args(self, capsys: pytest.CaptureFixture[str]) -> None:
         rc = main([])

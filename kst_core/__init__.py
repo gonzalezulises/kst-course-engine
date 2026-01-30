@@ -24,6 +24,13 @@ from kst_core.validation import (
     validate_knowledge_space,
     validate_learning_space,
 )
+from kst_core.viz import (
+    course_json,
+    hasse_dot,
+    hasse_mermaid,
+    prerequisites_dot,
+    trajectory_dot,
+)
 
 __all__ = [
     "AdaptiveAssessment",
@@ -44,11 +51,16 @@ __all__ = [
     "SurmiseRelation",
     "ValidationReport",
     "ValidationResult",
+    "course_json",
     "em_fit",
     "goodness_of_fit",
+    "hasse_dot",
+    "hasse_mermaid",
     "parse_file",
     "parse_yaml",
+    "prerequisites_dot",
     "simulate_responses",
+    "trajectory_dot",
     "validate_knowledge_space",
     "validate_learning_space",
 ]

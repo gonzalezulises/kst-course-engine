@@ -133,6 +133,8 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+    { name = "types-networkx" },
+    { name = "types-pyyaml" },
 ]
 
 [package.metadata]
@@ -146,6 +148,8 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.0" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8" },
+    { name = "types-networkx", marker = "extra == 'dev'", specifier = ">=3.4" },
+    { name = "types-pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
 ]
 provides-extras = ["dev"]
 
@@ -544,6 +548,27 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88", size = 30594, upload-time = "2021-05-16T22:03:42.897Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0", size = 29575, upload-time = "2021-05-16T22:03:41.177Z" },
+]
+
+[[package]]
+name = "types-networkx"
+version = "3.6.1.20251220"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/07/e3/dcc20d645dc0631b0df263959b8dde49dc47ad3c0537d8958bfefe692380/types_networkx-3.6.1.20251220.tar.gz", hash = "sha256:caf95e0d7777b969e50ceeb2c430d9d4dfe6b7bdee43c42dc9879a2d4408a790", size = 73500, upload-time = "2025-12-20T03:07:47.933Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/e7/fe40cfe7ba384d1f46fee835eb7727a4ee2fd80021a69add9553197b69a1/types_networkx-3.6.1.20251220-py3-none-any.whl", hash = "sha256:417ccbe7841f335a4c2b8e7515c3bc97a00fb5f686f399a763ef64392b209eac", size = 162715, upload-time = "2025-12-20T03:07:46.882Z" },
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20250915"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/69/3c51b36d04da19b92f9e815be12753125bd8bc247ba0470a982e6979e71c/types_pyyaml-6.0.12.20250915.tar.gz", hash = "sha256:0f8b54a528c303f0e6f7165687dd33fafa81c807fcac23f632b63aa624ced1d3", size = 17522, upload-time = "2025-09-15T03:01:00.728Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/e0/1eed384f02555dde685fff1a1ac805c1c7dcb6dd019c916fe659b1c1f9ec/types_pyyaml-6.0.12.20250915-py3-none-any.whl", hash = "sha256:e7d4d9e064e89a3b3cae120b4990cd370874d2bf12fa5f46c97018dd5d3c9ab6", size = 20338, upload-time = "2025-09-15T03:00:59.218Z" },
 ]
 
 [[package]]

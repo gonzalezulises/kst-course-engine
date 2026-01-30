@@ -8,6 +8,7 @@ Usage:
     kst validate <file>      Formal validation checks
     kst paths <file>         Enumerate learning paths
     kst simulate <file>      Simulate learner cohort
+    kst export <file>        Export as DOT, JSON, or Mermaid
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from kst_core.assessment import AdaptiveAssessment, BLIMParameters, simulate_res
 from kst_core.learning import LearningModel, LearningRate
 from kst_core.parser import parse_file
 from kst_core.validation import validate_learning_space
+from kst_core.viz import course_json, hasse_dot, hasse_mermaid, prerequisites_dot
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -81,6 +83,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Random seed for reproducibility",
     )
 
+    # --- kst export ---
+    export_parser = subparsers.add_parser("export", help="Export as DOT, JSON, or Mermaid")
+    export_parser.add_argument("file", help="Path to .kst.yaml file")
+    export_parser.add_argument(
+        "--format",
+        choices=["dot", "json", "mermaid"],
+        default="dot",
+        help="Output format (default: dot)",
+    )
+    export_parser.add_argument(
+        "--type",
+        choices=["hasse", "prerequisites"],
+        default="hasse",
+        help="Diagram type (default: hasse)",
+    )
+
     args = parser.parse_args(argv)
 
     if args.command is None:
@@ -95,6 +113,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _cmd_paths(args.file, args.max)
     if args.command == "simulate":
         return _cmd_simulate(args.file, args.learners, args.beta, args.eta, args.seed)
+    if args.command == "export":
+        return _cmd_export(args.file, args.format, args.type)
     return 0  # pragma: no cover
 
 
@@ -225,5 +245,35 @@ def _cmd_simulate(
     print("=== Learning Trajectories ===")
     print(f"Expected steps to mastery: {expected[empty_state]:.1f}")
     print(f"Simulated avg steps: {np.mean(lengths):.1f} (std={np.std(lengths):.1f})")
+
+    return 0
+
+
+def _cmd_export(file_path: str, fmt: str, diagram_type: str) -> int:
+    """Export course structure as DOT, JSON, or Mermaid."""
+    try:
+        course = parse_file(file_path)
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+
+    if fmt == "json":
+        print(course_json(course))
+        return 0
+
+    ls = course.to_learning_space()
+
+    if diagram_type == "prerequisites":
+        if fmt == "mermaid":
+            print("Error: Mermaid format not supported for prerequisites", file=sys.stderr)
+            return 1
+        print(prerequisites_dot(course.prerequisite_graph))
+        return 0
+
+    # hasse diagram
+    if fmt == "dot":
+        print(hasse_dot(ls))
+    else:
+        print(hasse_mermaid(ls))
 
     return 0
