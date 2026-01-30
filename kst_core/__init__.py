@@ -14,6 +14,7 @@ from kst_core.estimation import (
     em_fit,
     goodness_of_fit,
 )
+from kst_core.learning import LearningModel, LearningRate
 from kst_core.parser import CourseDefinition, parse_file, parse_yaml
 from kst_core.prerequisites import PrerequisiteGraph, SurmiseRelation
 from kst_core.space import KnowledgeSpace, LearningSpace
@@ -35,6 +36,8 @@ __all__ = [
     "Item",
     "KnowledgeSpace",
     "KnowledgeState",
+    "LearningModel",
+    "LearningRate",
     "LearningSpace",
     "PrerequisiteGraph",
     "ResponseData",
