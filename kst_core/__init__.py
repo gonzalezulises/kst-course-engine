@@ -1,6 +1,7 @@
 """KST Course Engine — Knowledge Space Theory core structures."""
 
 from kst_core.domain import Domain, Item, KnowledgeState
+from kst_core.parser import CourseDefinition, parse_file, parse_yaml
 from kst_core.prerequisites import PrerequisiteGraph, SurmiseRelation
 from kst_core.space import KnowledgeSpace, LearningSpace
 from kst_core.validation import (
@@ -11,6 +12,7 @@ from kst_core.validation import (
 )
 
 __all__ = [
+    "CourseDefinition",
     "Domain",
     "Item",
     "KnowledgeSpace",
@@ -20,6 +22,8 @@ __all__ = [
     "SurmiseRelation",
     "ValidationReport",
     "ValidationResult",
+    "parse_file",
+    "parse_yaml",
     "validate_knowledge_space",
     "validate_learning_space",
 ]
