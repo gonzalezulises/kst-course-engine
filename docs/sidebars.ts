@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
         'api/space',
         'api/prerequisites',
         'api/validation',
+        'api/parser',
       ],
     },
   ],

@@ -25,38 +25,99 @@ cd kst-course-engine
 uv venv && uv pip install -e ".[dev]"
 ```
 
+### From YAML (declarative)
+
+Define a course in `.kst.yaml`:
+
+```yaml
+# examples/intro-pandas.kst.yaml
+domain:
+  name: "Introduction to Pandas"
+  items:
+    - id: "import"
+      label: "Importing pandas"
+    - id: "series"
+      label: "Understanding Series"
+    - id: "dataframe"
+      label: "Understanding DataFrames"
+    - id: "indexing"
+      label: "Indexing and selecting data"
+prerequisites:
+  edges:
+    - ["import", "series"]
+    - ["import", "dataframe"]
+    - ["series", "indexing"]
+    - ["dataframe", "indexing"]
+```
+
+```python
+from kst_core import parse_file
+
+course = parse_file("examples/intro-pandas.kst.yaml")
+print(f"{course.name}: {len(course.domain)} items, {len(course.states)} states")
+
+ls = course.to_learning_space()
+for path in ls.learning_paths():
+    print(" → ".join(item.id for item in path))
+```
+
+### From code (programmatic)
+
 ```python
 from kst_core import Domain, Item, KnowledgeSpace, KnowledgeState
 
-# Define a domain of arithmetic skills
 items = [Item(id="add"), Item(id="sub"), Item(id="mul")]
 domain = Domain(items=frozenset(items))
 
-# Define feasible knowledge states
 states = frozenset({
-    KnowledgeState(),                                          # ∅
-    KnowledgeState(items=frozenset({items[0]})),              # {add}
-    KnowledgeState(items=frozenset({items[0], items[1]})),    # {add, sub}
-    KnowledgeState(items=frozenset(items)),                    # {add, sub, mul}
+    KnowledgeState(),
+    KnowledgeState(items=frozenset({items[0]})),
+    KnowledgeState(items=frozenset({items[0], items[1]})),
+    KnowledgeState(items=frozenset(items)),
 })
 
-# Construct a validated knowledge space
 space = KnowledgeSpace(domain=domain, states=states)
-
-# Explore learning paths
-from kst_core import LearningSpace
-ls = LearningSpace(domain=domain, states=states)
-for path in ls.learning_paths():
-    print(" → ".join(item.id for item in path))
-# add → sub → mul
 ```
 
-## Features
+## Architecture
 
-- **`kst_core.domain`** — `Item`, `KnowledgeState`, `Domain` with full set-algebraic operations
-- **`kst_core.space`** — `KnowledgeSpace` (axioms S1-S3) and `LearningSpace` (antimatroid)
-- **`kst_core.prerequisites`** — `SurmiseRelation` (quasi-orders) and `PrerequisiteGraph` (DAG with NetworkX)
-- **`kst_core.validation`** — Formal validators with bibliographic references
+```
+kst_core/
+├── domain.py          # Item, KnowledgeState, Domain
+├── space.py           # KnowledgeSpace, LearningSpace
+├── prerequisites.py   # SurmiseRelation, PrerequisiteGraph
+├── validation.py      # ValidationResult, ValidationReport
+└── parser.py          # YAML parser (.kst.yaml → KST structures)
+```
+
+**Data flow:**
+
+```
+.kst.yaml ──parse──▸ CourseDefinition
+                          │
+              ┌───────────┼───────────┐
+              ▼           ▼           ▼
+           Domain    PrereqGraph   SurmiseRelation
+              │           │           │
+              └─────┬─────┘     (Birkhoff)
+                    ▼                 │
+             KnowledgeSpace ◂─────────┘
+                    │
+                    ▼
+             LearningSpace
+              ╱          ╲
+     learning_paths    fringes
+```
+
+## Modules
+
+| Module | Classes | Description |
+|--------|---------|-------------|
+| `domain` | `Item`, `KnowledgeState`, `Domain` | Set-algebraic foundations |
+| `space` | `KnowledgeSpace`, `LearningSpace` | Axiom validation, fringes, learning paths |
+| `prerequisites` | `SurmiseRelation`, `PrerequisiteGraph` | Quasi-orders, DAGs, Birkhoff theorem |
+| `validation` | `ValidationResult`, `ValidationReport` | Formal validators with bibliographic refs |
+| `parser` | `CourseDefinition`, `parse_yaml`, `parse_file` | Declarative YAML course definitions |
 
 ## Development
 

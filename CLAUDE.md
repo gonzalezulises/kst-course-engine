@@ -6,7 +6,7 @@ KST Course Engine implements Knowledge Space Theory (KST) mathematical structure
 
 ## Tech Stack
 
-- **Python 3.12+** with Pydantic v2, NetworkX, NumPy
+- **Python 3.12+** with Pydantic v2, NetworkX, NumPy, PyYAML
 - **Testing**: pytest + Hypothesis (property-based testing), 100% coverage required
 - **Linting**: ruff (strict), mypy (strict)
 - **Docs**: Docusaurus with KaTeX for LaTeX math
@@ -30,7 +30,27 @@ kst_core/
 ├── space.py           # KnowledgeSpace, LearningSpace (axiom validation)
 ├── prerequisites.py   # SurmiseRelation, PrerequisiteGraph (DAG/quasi-order)
 ├── validation.py      # ValidationResult, ValidationReport, validators
+├── parser.py          # YAML parser (.kst.yaml → CourseDefinition)
 └── __init__.py        # Public API exports
+```
+
+## Data Flow
+
+```
+.kst.yaml ──parse──▸ CourseDefinition
+                          │
+              ┌───────────┼───────────┐
+              ▼           ▼           ▼
+           Domain    PrereqGraph   SurmiseRelation
+              │           │           │
+              └─────┬─────┘     (Birkhoff)
+                    ▼                 │
+             KnowledgeSpace ◂─────────┘
+                    │
+                    ▼
+             LearningSpace
+              ╱          ╲
+     learning_paths    fringes
 ```
 
 ## Conventions
