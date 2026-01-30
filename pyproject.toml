@@ -42,6 +42,9 @@ dev = [
     "types-PyYAML>=6.0",
 ]
 
+[project.scripts]
+kst = "kst_core.cli:main"
+
 [tool.hatch.build.targets.wheel]
 packages = ["kst_core"]
 
