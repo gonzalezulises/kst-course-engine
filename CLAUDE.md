@@ -33,6 +33,7 @@ kst_core/
 ├── parser.py          # YAML parser (.kst.yaml → CourseDefinition)
 ├── assessment.py      # BLIM adaptive assessment (Bayesian state estimation)
 ├── estimation.py      # EM parameter estimation for BLIM (MLE)
+├── learning.py        # Markov learning model (trajectory simulation)
 └── __init__.py        # Public API exports
 ```
 

@@ -89,7 +89,8 @@ kst_core/
 ├── validation.py      # ValidationResult, ValidationReport
 ├── parser.py          # YAML parser (.kst.yaml → KST structures)
 ├── assessment.py      # BLIM adaptive assessment engine
-└── estimation.py      # EM parameter estimation for BLIM
+├── estimation.py      # EM parameter estimation for BLIM
+└── learning.py        # Markov learning model on learning spaces
 ```
 
 **Data flow:**
@@ -122,6 +123,7 @@ kst_core/
 | `parser` | `CourseDefinition`, `parse_yaml`, `parse_file` | Declarative YAML course definitions |
 | `assessment` | `BLIMParameters`, `BeliefState`, `AdaptiveAssessment` | BLIM adaptive assessment with Bayesian updating |
 | `estimation` | `ResponseData`, `BLIMEstimate`, `em_fit`, `goodness_of_fit` | EM parameter estimation and model fit |
+| `learning` | `LearningRate`, `LearningModel` | Markov chain learning model with optimal teaching |
 
 ## Development
 
