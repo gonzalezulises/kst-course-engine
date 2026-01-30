@@ -32,6 +32,7 @@ kst_core/
 ├── validation.py      # ValidationResult, ValidationReport, validators
 ├── parser.py          # YAML parser (.kst.yaml → CourseDefinition)
 ├── assessment.py      # BLIM adaptive assessment (Bayesian state estimation)
+├── estimation.py      # EM parameter estimation for BLIM (MLE)
 └── __init__.py        # Public API exports
 ```
 

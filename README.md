@@ -88,7 +88,8 @@ kst_core/
 ├── prerequisites.py   # SurmiseRelation, PrerequisiteGraph
 ├── validation.py      # ValidationResult, ValidationReport
 ├── parser.py          # YAML parser (.kst.yaml → KST structures)
-└── assessment.py      # BLIM adaptive assessment engine
+├── assessment.py      # BLIM adaptive assessment engine
+└── estimation.py      # EM parameter estimation for BLIM
 ```
 
 **Data flow:**
@@ -120,6 +121,7 @@ kst_core/
 | `validation` | `ValidationResult`, `ValidationReport` | Formal validators with bibliographic refs |
 | `parser` | `CourseDefinition`, `parse_yaml`, `parse_file` | Declarative YAML course definitions |
 | `assessment` | `BLIMParameters`, `BeliefState`, `AdaptiveAssessment` | BLIM adaptive assessment with Bayesian updating |
+| `estimation` | `ResponseData`, `BLIMEstimate`, `em_fit`, `goodness_of_fit` | EM parameter estimation and model fit |
 
 ## Development
 
