@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import pytest  # noqa: TC002
+import pytest
 
 from kst_core.cli import main
 
@@ -155,6 +155,88 @@ class TestExport:
         assert rc == 1
         err = capsys.readouterr().err
         assert "Error" in err
+
+
+class TestAssess:
+    def test_assess(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        import io
+
+        monkeypatch.setattr("sys.stdin", io.StringIO("y\n" * 20))
+        rc = main(["assess", EXAMPLE_FILE])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "Assessment Complete" in out
+
+    def test_assess_custom_params(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        import io
+
+        monkeypatch.setattr("sys.stdin", io.StringIO("n\n" * 20))
+        rc = main(["assess", EXAMPLE_FILE, "--beta", "0.05", "--eta", "0.05", "--threshold", "0.5"])
+        assert rc == 0
+
+    def test_assess_file_not_found(self, capsys: pytest.CaptureFixture[str]) -> None:
+        rc = main(["assess", "nonexistent.kst.yaml"])
+        assert rc == 1
+        err = capsys.readouterr().err
+        assert "Error" in err
+
+
+class TestExamplesIntegration:
+    """Test CLI commands with various example files."""
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "examples/intro-pandas.kst.yaml",
+            "examples/linear-chain.kst.yaml",
+            "examples/diamond-lattice.kst.yaml",
+            "examples/large-domain.kst.yaml",
+        ],
+    )
+    def test_info_all_examples(
+        self, path: str, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rc = main(["info", path])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "Course:" in out
+        assert "Items:" in out
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "examples/linear-chain.kst.yaml",
+            "examples/diamond-lattice.kst.yaml",
+        ],
+    )
+    def test_validate_examples(
+        self, path: str, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rc = main(["validate", path])
+        assert rc == 0
+        out = capsys.readouterr().out
+        assert "[PASS]" in out
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "examples/linear-chain.kst.yaml",
+            "examples/diamond-lattice.kst.yaml",
+        ],
+    )
+    def test_export_examples(
+        self, path: str, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rc = main(["export", path, "--format", "json"])
+        assert rc == 0
 
 
 class TestNoCommand:

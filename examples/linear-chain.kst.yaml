@@ -1,0 +1,26 @@
+# Linear Chain — 5-item total order
+# a → b → c → d → e
+# Only 1 learning path: a, b, c, d, e
+# States: ∅, {a}, {a,b}, {a,b,c}, {a,b,c,d}, {a,b,c,d,e}
+
+domain:
+  name: "Linear Chain"
+  description: "A simple total order with 5 items"
+  items:
+    - id: "a"
+      label: "Foundations"
+    - id: "b"
+      label: "Core concepts"
+    - id: "c"
+      label: "Intermediate skills"
+    - id: "d"
+      label: "Advanced topics"
+    - id: "e"
+      label: "Mastery"
+
+prerequisites:
+  edges:
+    - ["a", "b"]
+    - ["b", "c"]
+    - ["c", "d"]
+    - ["d", "e"]

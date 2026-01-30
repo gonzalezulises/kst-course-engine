@@ -1,0 +1,24 @@
+# Diamond Lattice — 4-item diamond
+# a → {b, c} → d
+# 2 learning paths: a,b,c,d and a,c,b,d
+# States: ∅, {a}, {a,b}, {a,c}, {a,b,c}, {a,b,c,d}
+
+domain:
+  name: "Diamond Lattice"
+  description: "A diamond prerequisite structure with two parallel branches"
+  items:
+    - id: "a"
+      label: "Foundation"
+    - id: "b"
+      label: "Branch 1"
+    - id: "c"
+      label: "Branch 2"
+    - id: "d"
+      label: "Capstone"
+
+prerequisites:
+  edges:
+    - ["a", "b"]
+    - ["a", "c"]
+    - ["b", "d"]
+    - ["c", "d"]

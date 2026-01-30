@@ -1,0 +1,60 @@
+# Data Science Foundations — 12-item domain with branching prerequisites
+#
+# A comprehensive domain modeling a data science introductory course
+# with multiple prerequisite paths and branching specializations.
+#
+# Structure:
+#   python → {numpy, pandas}
+#   numpy → {linalg, stats}
+#   pandas → {cleaning, merging}
+#   linalg → ml_basics
+#   stats → {ml_basics, hypothesis}
+#   cleaning → eda
+#   merging → eda
+#   ml_basics → {regression, classification}
+#   eda → visualization
+
+domain:
+  name: "Data Science Foundations"
+  description: "A 12-item domain covering core data science skills with branching prerequisites"
+  items:
+    - id: "python"
+      label: "Python programming basics"
+    - id: "numpy"
+      label: "NumPy arrays and operations"
+    - id: "pandas"
+      label: "Pandas DataFrames"
+    - id: "linalg"
+      label: "Linear algebra concepts"
+    - id: "stats"
+      label: "Descriptive statistics"
+    - id: "cleaning"
+      label: "Data cleaning techniques"
+    - id: "merging"
+      label: "Merging and joining datasets"
+    - id: "ml_basics"
+      label: "Machine learning fundamentals"
+    - id: "hypothesis"
+      label: "Hypothesis testing"
+    - id: "eda"
+      label: "Exploratory data analysis"
+    - id: "regression"
+      label: "Linear regression"
+    - id: "classification"
+      label: "Classification algorithms"
+
+prerequisites:
+  edges:
+    - ["python", "numpy"]
+    - ["python", "pandas"]
+    - ["numpy", "linalg"]
+    - ["numpy", "stats"]
+    - ["pandas", "cleaning"]
+    - ["pandas", "merging"]
+    - ["linalg", "ml_basics"]
+    - ["stats", "ml_basics"]
+    - ["stats", "hypothesis"]
+    - ["cleaning", "eda"]
+    - ["merging", "eda"]
+    - ["ml_basics", "regression"]
+    - ["ml_basics", "classification"]

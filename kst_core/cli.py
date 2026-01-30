@@ -20,6 +20,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from kst_core.assessment import AdaptiveAssessment, BLIMParameters, simulate_responses
+from kst_core.interactive import run_terminal_assessment
 from kst_core.learning import LearningModel, LearningRate
 from kst_core.parser import parse_file
 from kst_core.validation import validate_learning_space
@@ -83,6 +84,44 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Random seed for reproducibility",
     )
 
+    # --- kst assess ---
+    assess_parser = subparsers.add_parser("assess", help="Interactive assessment")
+    assess_parser.add_argument("file", help="Path to .kst.yaml file")
+    assess_parser.add_argument(
+        "--beta",
+        type=float,
+        default=0.1,
+        help="Slip probability (default: 0.1)",
+    )
+    assess_parser.add_argument(
+        "--eta",
+        type=float,
+        default=0.1,
+        help="Guess probability (default: 0.1)",
+    )
+    assess_parser.add_argument(
+        "--threshold",
+        type=float,
+        default=0.1,
+        help="Entropy threshold for stopping (default: 0.1)",
+    )
+
+    # --- kst optimize ---
+    optimize_parser = subparsers.add_parser("optimize", help="Run optimization algorithms")
+    optimize_parser.add_argument("file", help="Path to .kst.yaml file")
+    optimize_parser.add_argument(
+        "--mode",
+        choices=["calibrate", "teach", "difficulty", "rates"],
+        default="difficulty",
+        help="Optimization mode (default: difficulty)",
+    )
+    optimize_parser.add_argument(
+        "--data",
+        type=str,
+        default=None,
+        help="Path to CSV data file (for calibrate/rates modes)",
+    )
+
     # --- kst export ---
     export_parser = subparsers.add_parser("export", help="Export as DOT, JSON, or Mermaid")
     export_parser.add_argument("file", help="Path to .kst.yaml file")
@@ -113,6 +152,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _cmd_paths(args.file, args.max)
     if args.command == "simulate":
         return _cmd_simulate(args.file, args.learners, args.beta, args.eta, args.seed)
+    if args.command == "assess":
+        return _cmd_assess(args.file, args.beta, args.eta, args.threshold)
+    if args.command == "optimize":
+        return _cmd_optimize(args.file, args.mode, args.data)
     if args.command == "export":
         return _cmd_export(args.file, args.format, args.type)
     return 0  # pragma: no cover
@@ -247,6 +290,67 @@ def _cmd_simulate(
     print(f"Simulated avg steps: {np.mean(lengths):.1f} (std={np.std(lengths):.1f})")
 
     return 0
+
+
+def _cmd_assess(
+    file_path: str,
+    beta: float,
+    eta: float,
+    threshold: float,
+) -> int:
+    """Run interactive assessment."""
+    try:
+        course = parse_file(file_path)
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+
+    run_terminal_assessment(course, beta=beta, eta=eta, entropy_threshold=threshold)
+    return 0
+
+
+def _cmd_optimize(file_path: str, mode: str, data_path: str | None) -> int:
+    """Run optimization algorithms."""
+    from kst_core.optimization import (
+        estimate_item_difficulty,
+        optimal_teaching_sequence,
+    )
+
+    try:
+        course = parse_file(file_path)
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+
+    if mode == "difficulty":
+        report = estimate_item_difficulty(
+            course.domain, course.prerequisite_graph
+        )
+        print(f"=== Item Difficulty ({report.method}) ===")
+        for item in report.items:
+            print(
+                f"  {item.item_id}: depth={item.structural_depth}, "
+                f"difficulty={item.combined_difficulty:.3f}"
+            )
+        return 0
+
+    if mode == "teach":
+        ls = course.to_learning_space()
+        plan = optimal_teaching_sequence(ls)
+        print("=== Optimal Teaching Sequence ===")
+        print(f"Total steps: {plan.total_expected_steps:.0f}")
+        for i, step in enumerate(plan.steps):
+            print(f"  {i + 1}. Teach '{step.item_id}' (remaining: {step.expected_remaining:.0f})")
+        return 0
+
+    if mode in ("calibrate", "rates"):
+        if data_path is None:
+            print("Error: --data is required for calibrate/rates mode", file=sys.stderr)
+            return 1
+        print(f"Error: CSV data loading not yet implemented for {mode}", file=sys.stderr)
+        return 1
+
+    return 0  # pragma: no cover
 
 
 def _cmd_export(file_path: str, fmt: str, diagram_type: str) -> int:

@@ -130,7 +130,7 @@ def parse_yaml(content: str) -> CourseDefinition:
         raise ValueError(msg)
 
     schema = CourseSchema(**raw)
-    return _build_course(schema)
+    return build_course(schema)
 
 
 def parse_file(path: str | Path) -> CourseDefinition:
@@ -155,7 +155,7 @@ def parse_file(path: str | Path) -> CourseDefinition:
     return parse_yaml(content)
 
 
-def _build_course(schema: CourseSchema) -> CourseDefinition:
+def build_course(schema: CourseSchema) -> CourseDefinition:
     """Build KST structures from a validated schema."""
     items = [Item(id=item.id, label=item.label) for item in schema.domain.items]
     domain = Domain(items=frozenset(items))

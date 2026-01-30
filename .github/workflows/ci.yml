@@ -25,7 +25,7 @@ jobs:
           echo "${{ matrix.python-version }}" > .python-version
 
       - name: Install dependencies
-        run: uv venv && uv pip install -e ".[dev]"
+        run: uv venv && uv pip install -e ".[dev,api]"
 
       - name: Lint (ruff check)
         run: uv run ruff check kst_core/ tests/

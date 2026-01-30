@@ -32,6 +32,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+api = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+]
 dev = [
     "pytest>=8.0",
     "pytest-cov>=6.0",
@@ -40,6 +44,9 @@ dev = [
     "ruff>=0.8",
     "types-networkx>=3.4",
     "types-PyYAML>=6.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "httpx>=0.28",
 ]
 
 [project.scripts]

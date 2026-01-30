@@ -6,7 +6,7 @@ KST Course Engine implements Knowledge Space Theory (KST) mathematical structure
 
 ## Tech Stack
 
-- **Python 3.12+** with Pydantic v2, NetworkX, NumPy, PyYAML
+- **Python 3.12+** with Pydantic v2, NetworkX, NumPy, PyYAML, FastAPI (optional)
 - **Testing**: pytest + Hypothesis (property-based testing), 100% coverage required
 - **Linting**: ruff (strict), mypy (strict)
 - **Docs**: Docusaurus with KaTeX for LaTeX math
@@ -22,11 +22,17 @@ uv run mypy kst_core/                  # Type check (strict)
 cd docs && npm run build               # Build documentation
 
 # CLI
-kst info examples/intro-pandas.kst.yaml       # Course overview
-kst validate examples/intro-pandas.kst.yaml   # Formal validation
-kst paths examples/intro-pandas.kst.yaml      # Learning paths
-kst simulate examples/intro-pandas.kst.yaml   # Simulate learners
-kst export examples/intro-pandas.kst.yaml     # Export as DOT/JSON/Mermaid
+kst info examples/intro-pandas.kst.yaml              # Course overview
+kst validate examples/intro-pandas.kst.yaml          # Formal validation
+kst paths examples/intro-pandas.kst.yaml             # Learning paths
+kst simulate examples/intro-pandas.kst.yaml          # Simulate learners
+kst assess examples/intro-pandas.kst.yaml            # Interactive assessment
+kst optimize examples/intro-pandas.kst.yaml --mode difficulty  # Item difficulty
+kst optimize examples/intro-pandas.kst.yaml --mode teach       # Optimal teaching
+kst export examples/intro-pandas.kst.yaml            # Export as DOT/JSON/Mermaid
+
+# REST API
+uvicorn kst_core.api:app --reload      # Start API server
 ```
 
 ## Architecture
@@ -42,7 +48,10 @@ kst_core/
 ├── estimation.py      # EM parameter estimation for BLIM (MLE)
 ├── learning.py        # Markov learning model (trajectory simulation)
 ├── viz.py             # Visualization: DOT, Mermaid, JSON export (Hasse diagrams)
-├── cli.py             # Command-line interface (kst info/validate/paths/simulate/export)
+├── interactive.py     # Interactive assessment sessions (terminal + API)
+├── optimization.py    # Optimization: calibration, teaching, difficulty, rates
+├── api.py             # FastAPI REST API (optional dependency)
+├── cli.py             # CLI (kst info/validate/paths/simulate/assess/optimize/export)
 └── __init__.py        # Public API exports
 ```
 

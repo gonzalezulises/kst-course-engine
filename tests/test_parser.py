@@ -259,6 +259,56 @@ class TestParseFile:
         assert cd.name == "Test"
 
 
+class TestParseExamples:
+    """Parametrized tests for all example YAML files."""
+
+    @pytest.mark.parametrize(
+        ("path", "name", "n_items", "min_states"),
+        [
+            ("examples/intro-pandas.kst.yaml", "Introduction to Pandas", 8, 15),
+            ("examples/linear-chain.kst.yaml", "Linear Chain", 5, 6),
+            ("examples/diamond-lattice.kst.yaml", "Diamond Lattice", 4, 6),
+            ("examples/large-domain.kst.yaml", "Data Science Foundations", 12, 10),
+        ],
+    )
+    def test_parse_example(
+        self, path: str, name: str, n_items: int, min_states: int
+    ) -> None:
+        cd = parse_file(path)
+        assert cd.name == name
+        assert len(cd.domain) == n_items
+        assert len(cd.states) >= min_states
+
+    @pytest.mark.parametrize(
+        "path",
+        [
+            "examples/intro-pandas.kst.yaml",
+            "examples/linear-chain.kst.yaml",
+            "examples/diamond-lattice.kst.yaml",
+            "examples/large-domain.kst.yaml",
+        ],
+    )
+    def test_example_produces_valid_learning_space(self, path: str) -> None:
+        cd = parse_file(path)
+        ls = cd.to_learning_space()
+        paths = ls.learning_paths()
+        assert len(paths) > 0
+        for p in paths:
+            assert len(p) == len(cd.domain)
+
+    @pytest.mark.parametrize(
+        ("path", "expected_paths"),
+        [
+            ("examples/linear-chain.kst.yaml", 1),
+            ("examples/diamond-lattice.kst.yaml", 2),
+        ],
+    )
+    def test_expected_path_count(self, path: str, expected_paths: int) -> None:
+        cd = parse_file(path)
+        ls = cd.to_learning_space()
+        assert len(ls.learning_paths()) == expected_paths
+
+
 class TestCourseDefinition:
     def test_name_and_description(self) -> None:
         cd = parse_yaml(LINEAR_YAML)

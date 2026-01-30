@@ -92,6 +92,9 @@ kst_core/
 ├── estimation.py      # EM parameter estimation for BLIM
 ├── learning.py        # Markov learning model on learning spaces
 ├── viz.py             # Visualization: DOT, Mermaid, JSON export
+├── interactive.py     # Interactive assessment sessions
+├── optimization.py    # Optimization: calibration, teaching, difficulty, rates
+├── api.py             # FastAPI REST API
 └── cli.py             # Command-line interface
 ```
 
@@ -127,7 +130,10 @@ kst_core/
 | `estimation` | `ResponseData`, `BLIMEstimate`, `em_fit`, `goodness_of_fit` | EM parameter estimation and model fit |
 | `learning` | `LearningRate`, `LearningModel` | Markov chain learning model with optimal teaching |
 | `viz` | `hasse_dot`, `hasse_mermaid`, `course_json` | DOT, Mermaid, and JSON export |
-| `cli` | `kst` command | CLI: info, validate, paths, simulate, export |
+| `interactive` | `AssessmentStep`, `AssessmentSummary`, `SessionStore` | Interactive assessment sessions |
+| `optimization` | `calibrate_parameters`, `optimal_teaching_sequence` | Multi-restart EM, MDP teaching, difficulty estimation |
+| `api` | FastAPI REST endpoints | REST API: info, validate, paths, simulate, export, assess |
+| `cli` | `kst` command | CLI: info, validate, paths, simulate, assess, optimize, export |
 
 ## CLI
 
@@ -136,10 +142,21 @@ kst info examples/intro-pandas.kst.yaml       # Course overview
 kst validate examples/intro-pandas.kst.yaml   # Formal validation
 kst paths examples/intro-pandas.kst.yaml      # Learning paths
 kst simulate examples/intro-pandas.kst.yaml --learners 100 --seed 42
+kst assess examples/intro-pandas.kst.yaml     # Interactive assessment
+kst optimize examples/intro-pandas.kst.yaml --mode difficulty  # Item difficulty
+kst optimize examples/intro-pandas.kst.yaml --mode teach       # Optimal teaching
 kst export examples/intro-pandas.kst.yaml --format dot     # Hasse DOT
 kst export examples/intro-pandas.kst.yaml --format mermaid  # Hasse Mermaid
 kst export examples/intro-pandas.kst.yaml --format json     # JSON export
 kst export examples/intro-pandas.kst.yaml --type prerequisites  # Prereq DOT
+```
+
+## REST API
+
+```bash
+pip install kst-course-engine[api]
+uvicorn kst_core.api:app --reload
+# Visit http://localhost:8000/docs for interactive API docs
 ```
 
 ## Development
