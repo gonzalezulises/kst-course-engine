@@ -1,5 +1,13 @@
 version: 2
 
+# `enable-beta-ecosystems: true` por el ecosistema uv. El valor `uv` es GA en la
+# referencia de opciones de Dependabot, pero en helm el flag se retiro al pasar a GA y el
+# updater siguio fallando sin el por una comprobacion embebida
+# (dependabot/dependabot-core#12121). Dejarlo es la direccion segura: inocuo si no hace
+# falta, imprescindible si esa comprobacion existe. Solo afecta a los ecosistemas
+# declarados aqui.
+enable-beta-ecosystems: true
+
 # Este repo no tenia .github/dependabot.yml, asi que solo recibia actualizaciones de
 # seguridad: una por vulnerabilidad, sin agrupar y sin nada que las cerrara.
 #
