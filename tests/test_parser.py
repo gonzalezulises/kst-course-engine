@@ -271,9 +271,7 @@ class TestParseExamples:
             ("examples/large-domain.kst.yaml", "Data Science Foundations", 12, 10),
         ],
     )
-    def test_parse_example(
-        self, path: str, name: str, n_items: int, min_states: int
-    ) -> None:
+    def test_parse_example(self, path: str, name: str, n_items: int, min_states: int) -> None:
         cd = parse_file(path)
         assert cd.name == name
         assert len(cd.domain) == n_items

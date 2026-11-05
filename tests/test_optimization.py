@@ -591,14 +591,16 @@ class TestOptimizeCLI:
     def test_calibrate_with_data(self, capsys: pytest.CaptureFixture[str]) -> None:
         from kst_core.cli import main
 
-        rc = main([
-            "optimize",
-            "examples/intro-pandas.kst.yaml",
-            "--mode",
-            "calibrate",
-            "--data",
-            "data.csv",
-        ])
+        rc = main(
+            [
+                "optimize",
+                "examples/intro-pandas.kst.yaml",
+                "--mode",
+                "calibrate",
+                "--data",
+                "data.csv",
+            ]
+        )
         assert rc == 1
         err = capsys.readouterr().err
         assert "not yet implemented" in err

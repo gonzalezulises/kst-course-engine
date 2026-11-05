@@ -438,9 +438,7 @@ class TestAssessEndpoints:
         assert resp.status_code == 422
 
     def test_assess_request_models(self) -> None:
-        req = AssessStartRequest(
-            domain=DomainInput(name="T", items=[ItemInput(id="a")])
-        )
+        req = AssessStartRequest(domain=DomainInput(name="T", items=[ItemInput(id="a")]))
         assert req.beta == 0.1
         respond = AssessRespondRequest(correct=False)
         assert respond.correct is False
@@ -456,9 +454,7 @@ class TestAssessEndpoints:
             estimate_ids=["a"],
         )
         assert step.item_id == "a"
-        respond = AssessRespondResponse(
-            step=step, next_item="b", is_complete=False
-        )
+        respond = AssessRespondResponse(step=step, next_item="b", is_complete=False)
         assert respond.next_item == "b"
         summary = AssessSummaryResponse(
             total_questions=1,
