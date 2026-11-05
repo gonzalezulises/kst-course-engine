@@ -323,9 +323,7 @@ def _cmd_optimize(file_path: str, mode: str, data_path: str | None) -> int:
         return 1
 
     if mode == "difficulty":
-        report = estimate_item_difficulty(
-            course.domain, course.prerequisite_graph
-        )
+        report = estimate_item_difficulty(course.domain, course.prerequisite_graph)
         print(f"=== Item Difficulty ({report.method}) ===")
         for item in report.items:
             print(

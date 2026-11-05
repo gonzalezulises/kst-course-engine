@@ -201,9 +201,7 @@ class TestExamplesIntegration:
             "examples/large-domain.kst.yaml",
         ],
     )
-    def test_info_all_examples(
-        self, path: str, capsys: pytest.CaptureFixture[str]
-    ) -> None:
+    def test_info_all_examples(self, path: str, capsys: pytest.CaptureFixture[str]) -> None:
         rc = main(["info", path])
         assert rc == 0
         out = capsys.readouterr().out
@@ -217,9 +215,7 @@ class TestExamplesIntegration:
             "examples/diamond-lattice.kst.yaml",
         ],
     )
-    def test_validate_examples(
-        self, path: str, capsys: pytest.CaptureFixture[str]
-    ) -> None:
+    def test_validate_examples(self, path: str, capsys: pytest.CaptureFixture[str]) -> None:
         rc = main(["validate", path])
         assert rc == 0
         out = capsys.readouterr().out
@@ -232,9 +228,7 @@ class TestExamplesIntegration:
             "examples/diamond-lattice.kst.yaml",
         ],
     )
-    def test_export_examples(
-        self, path: str, capsys: pytest.CaptureFixture[str]
-    ) -> None:
+    def test_export_examples(self, path: str, capsys: pytest.CaptureFixture[str]) -> None:
         rc = main(["export", path, "--format", "json"])
         assert rc == 0
 

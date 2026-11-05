@@ -352,9 +352,7 @@ def estimate_item_difficulty(
         # Empirical difficulty
         empirical: float | None = None
         if data is not None:
-            incorrect_count = sum(
-                1 for p in data.patterns if not p[item_id]
-            )
+            incorrect_count = sum(1 for p in data.patterns if not p[item_id])
             empirical = incorrect_count / len(data.patterns)
 
         # BLIM difficulty: β + (1 - η) captures "hard to show mastery"
@@ -454,10 +452,7 @@ def tune_learning_rates(
             # Get outer fringe from cache
             key = current_ids
             if key not in fringe_cache:
-                resolved = [
-                    space.domain.get_item(iid)
-                    for iid in current_ids
-                ]
+                resolved = [space.domain.get_item(iid) for iid in current_ids]
                 current_state = KnowledgeState(
                     items=frozenset(it for it in resolved if it is not None)
                 )
@@ -496,9 +491,7 @@ def tune_learning_rates(
                 if not fringe_ids:
                     continue
 
-                total_rate = sum(
-                    rates[item_idx[fid]] for fid in fringe_ids if fid in item_idx
-                )
+                total_rate = sum(rates[item_idx[fid]] for fid in fringe_ids if fid in item_idx)
 
                 if total_rate <= 0:  # pragma: no cover
                     continue
