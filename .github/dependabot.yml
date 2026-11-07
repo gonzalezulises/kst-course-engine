@@ -20,6 +20,9 @@ enable-beta-ecosystems: true
 # verifique y la cola volveria a llenarse.
 updates:
   - package-ecosystem: npm
+    # Siete días de madurez antes de proponer una versión.
+    cooldown:
+      default-days: 7
     directory: "/docs"
     schedule:
       interval: weekly
@@ -32,6 +35,9 @@ updates:
           - "*"
 
   - package-ecosystem: uv
+    # Siete días de madurez antes de proponer una versión.
+    cooldown:
+      default-days: 7
     directory: "/"
     schedule:
       interval: weekly
